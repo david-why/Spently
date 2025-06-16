@@ -12,6 +12,7 @@ struct SpentlyApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .modelContainer(for: TransactionRecord.self)
         }
     }
 }

@@ -6,19 +6,26 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        TabView {
+            Tab("Records", systemImage: "list.bullet.rectangle") {
+                RecordsPage()
+            }
         }
-        .padding()
     }
 }
 
 #Preview {
+    let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: TransactionRecord.self, configurations: configuration)
+    let context = container.mainContext
+    
+    let _ = context.insert(SampleObjects.expenseRecord)
+    let _ = context.insert(SampleObjects.incomeRecord)
+    
     ContentView()
+        .modelContainer(container)
 }
