@@ -11,16 +11,25 @@ import SwiftData
 @Model
 class TransactionRecord {
     var amount: Decimal
-    var currency: Locale.Currency
+    var currencyCode: String
     var notes: String
     var category: TransactionCategory
     var timestamp: Date
     
-    init(amount: Decimal, currency: Locale.Currency, notes: String, category: TransactionCategory, timestamp: Date) {
+    init(amount: Decimal, currencyCode: String, notes: String, category: TransactionCategory, timestamp: Date) {
         self.amount = amount
-        self.currency = currency
+        self.currencyCode = currencyCode
         self.notes = notes
         self.category = category
         self.timestamp = timestamp
+    }
+    
+    var currency: Locale.Currency {
+        get {
+            .init(currencyCode)
+        }
+        set {
+            currencyCode = newValue.identifier
+        }
     }
 }

@@ -7,7 +7,21 @@
 
 import Foundation
 
-enum TransactionType: Codable {
-    case income
-    case expense
+enum TransactionType: String, Codable {
+    case income = "income"
+    case expense = "expense"
+
+    var sign: String {
+        switch self {
+        case .income: "+"
+        case .expense: "-"
+        }
+    }
+    
+    var displayName: String {
+        switch self {
+        case .income: "Income"
+        case .expense: "Expense"
+        }
+    }
 }

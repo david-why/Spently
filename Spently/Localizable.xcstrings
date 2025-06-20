@@ -1,0 +1,86 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    " Add" : {
+
+    },
+    " button to begin!" : {
+
+    },
+    "! Click the " : {
+
+    },
+    "%@ (%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "%@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
+    },
+    "%@%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@%2$@"
+          }
+        }
+      }
+    },
+    "Add" : {
+
+    },
+    "Amount" : {
+
+    },
+    "Category" : {
+
+    },
+    "Currency" : {
+
+    },
+    "Date" : {
+
+    },
+    "Edit" : {
+
+    },
+    "Expense" : {
+      "comment" : "Used on the record editing page.",
+      "extractionState" : "manual"
+    },
+    "Income" : {
+      "comment" : "Used on the record editing page.",
+      "extractionState" : "manual"
+    },
+    "Notes" : {
+
+    },
+    "Records" : {
+
+    },
+    "Spently" : {
+
+    },
+    "Transactions" : {
+
+    },
+    "Welcome to " : {
+
+    }
+  },
+  "version" : "1.0"
+}

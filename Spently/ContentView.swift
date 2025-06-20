@@ -9,10 +9,21 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+    @AppStorage("defaultCategoriesAdded") var defaultCategoriesAdded: Bool = false
+    
+    @Environment(\.modelContext) private var modelContext
+    
     var body: some View {
         TabView {
             Tab("Records", systemImage: "list.bullet.rectangle") {
                 RecordsPage()
+            }
+        }
+        .onAppear {
+            if !defaultCategoriesAdded {
+                for category in TransactionCategory.defaultCategories {
+                    modelContext.insert(category)
+                }
             }
         }
     }

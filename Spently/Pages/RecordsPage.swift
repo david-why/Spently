@@ -11,23 +11,66 @@ import SwiftData
 struct RecordsPage: View {
     @Query(sort: \TransactionRecord.timestamp, order: .reverse) var records: [TransactionRecord]
     
+    @Query(filter: #Predicate<TransactionRecord> { $0.amount == 0 }) var zeroRecords: [TransactionRecord]
+    
+    @State var addingRecord: TransactionRecord? = nil
+    @State var navigationPath: [TransactionRecord.ID] = []
+    
+    @Environment(\.modelContext) var modelContext
+    
     var body: some View {
-        NavigationView {
+        NavigationStack(path: $navigationPath) {
             List {
+                if (records.isEmpty) {
+                    emptyMessage
+                }
                 ForEach(recordSections, id: \.1) { section in
                     Section(section.1) {
                         ForEach(section.0) { record in
-                            NavigationLink {
-                                RecordDetailPage(record: record)
-                            } label: {
+                            NavigationLink(value: record.id) {
                                 TransactionView(record: record)
                             }
                         }
                     }
                 }
             }
-            .navigationTitle("Records")
+            .navigationTitle("Transactions")
+            .toolbar {
+                ToolbarItemGroup {
+                    Button("Add", systemImage: "plus") {
+                        print("add thing")
+                        let newRecord = TransactionRecord(amount: 0, currencyCode: Locale.current.currency?.identifier ?? "USD", notes: "", category: .defaultCategories[0], timestamp: .now)
+                        modelContext.insert(newRecord)
+                        do {
+                            try modelContext.save()
+                        } catch {
+                            print("error in saving", error)
+                        }
+                        navigationPath.append(newRecord.id)
+                    }
+                }
+            }
+            .navigationDestination(for: TransactionRecord.ID.self) { recordID in
+                if let record = records.filter({ $0.id == recordID }).first {
+                    RecordDetailPage(record: record)
+                }
+            }
+            .sheet(item: $addingRecord) { record in
+                RecordDetailPage(record: record)
+            }
+            .onAppear {
+                let _ = zeroRecords.map(modelContext.delete)
+            }
         }
+    }
+    
+    @ViewBuilder var emptyMessage: some View {
+        Text("Welcome to ")
+        + Text("Spently").bold()
+        + Text("! Click the ")
+        + Text(Image(systemName: "plus")).bold()
+        + Text(" Add").bold()
+        + Text(" button to begin!")
     }
     
     var recordSections: [([TransactionRecord], String)] {
@@ -53,13 +96,19 @@ struct RecordsPage: View {
 }
 
 #Preview {
-    let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: TransactionRecord.self, configurations: configuration)
-    let context = container.mainContext
+    let container = SampleObjects.modelContainer!
+    let context = SampleObjects.modelContext!
     
+    let _ = context.insert(SampleObjects.expenseCategory)
     let _ = context.insert(SampleObjects.expenseRecord)
+    let _ = context.insert(SampleObjects.incomeCategory)
     let _ = context.insert(SampleObjects.incomeRecord)
     
     RecordsPage()
         .modelContainer(container)
+}
+
+#Preview("Blank") {
+    RecordsPage()
+        .modelContainer(for: TransactionRecord.self, inMemory: true)
 }

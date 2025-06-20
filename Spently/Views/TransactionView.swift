@@ -18,13 +18,15 @@ struct TransactionView: View {
             VStack(alignment: .leading) {
                 Text(record.category.name)
                     .font(.headline)
-                Text(record.notes)
-                    .foregroundColor(.secondary)
+                if !record.notes.isEmpty {
+                    Text(record.notes)
+                        .foregroundColor(.secondary)
+                }
             }
             
             Spacer()
             
-            Text("-\(record.amount.formatted(.currency(code: record.currency.identifier)))")
+            Text("\(record.category.type.sign)\(record.amount.formatted(.currency(code: record.currency.identifier)))")
                 .font(.headline)
                 .foregroundStyle(record.category.type == .expense ? .red : .green)
         }
