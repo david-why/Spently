@@ -18,12 +18,14 @@ struct ContentView: View {
             Tab("Records", systemImage: "list.bullet.rectangle") {
                 RecordsPage()
             }
+            Tab("Settings", systemImage: "gear") {
+                SettingsPage()
+            }
         }
         .onAppear {
             if !defaultCategoriesAdded {
-                for category in TransactionCategory.defaultCategories {
-                    modelContext.insert(category)
-                }
+                _ = TransactionCategory.defaultCategories.map(modelContext.insert)
+                defaultCategoriesAdded = true
             }
         }
     }

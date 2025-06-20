@@ -13,8 +13,10 @@ struct RecordsPage: View {
     
     @Query(filter: #Predicate<TransactionRecord> { $0.amount == 0 }) var zeroRecords: [TransactionRecord]
     
-    @State var addingRecord: TransactionRecord? = nil
+    @Query var categories: [TransactionCategory]
+    
     @State var navigationPath: [TransactionRecord.ID] = []
+    @State var isPresentingNoCategories: Bool = false
     
     @Environment(\.modelContext) var modelContext
     
@@ -38,8 +40,10 @@ struct RecordsPage: View {
             .toolbar {
                 ToolbarItemGroup {
                     Button("Add", systemImage: "plus") {
-                        print("add thing")
-                        let newRecord = TransactionRecord(amount: 0, currencyCode: Locale.current.currency?.identifier ?? "USD", notes: "", category: .defaultCategories[0], timestamp: .now)
+                        guard let category = categories.first else {
+                            return
+                        }
+                        let newRecord = TransactionRecord(amount: 0, currencyCode: Locale.current.currency?.identifier ?? "USD", notes: "", category: categories[0], timestamp: .now)
                         modelContext.insert(newRecord)
                         do {
                             try modelContext.save()
@@ -53,13 +57,15 @@ struct RecordsPage: View {
             .navigationDestination(for: TransactionRecord.ID.self) { recordID in
                 if let record = records.filter({ $0.id == recordID }).first {
                     RecordDetailPage(record: record)
+                } else {
+                    EmptyView()
+                        .onAppear {
+                            navigationPath.removeLast()
+                        }
                 }
             }
-            .sheet(item: $addingRecord) { record in
-                RecordDetailPage(record: record)
-            }
             .onAppear {
-                let _ = zeroRecords.map(modelContext.delete)
+                _ = zeroRecords.map(modelContext.delete)
             }
         }
     }

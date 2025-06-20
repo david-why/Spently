@@ -19,21 +19,22 @@ struct RecordDetailPage: View {
 
     var body: some View {
         Form {
+            Section("Preview") {
+                TransactionView(record: record)
+            }
             Section {
                 categoryPicker
                 amountField
                 Picker("Currency", selection: $record.currency) {
-                    ForEach(currencyCodesWithValue, id: \.0) { currencyCode in
-                        Text("\(currencyCode.0) (\(currencyCode.1))").tag(Locale.Currency(currencyCode.0))
+                    ForEach(currencyCodesWithValue, id: \.0) { (code, display) in
+                        Text("\(code) (\(display))")
+                            .tag(Locale.Currency(code))
                     }
                 }
                 DatePicker("Date", selection: $record.timestamp)
             }
             Section("Notes") {
                 TextEditor(text: $record.notes)
-            }
-            Section("Preview") {
-                TransactionView(record: record)
             }
         }
         .animation(.default, value: isCategoriesOpen)
@@ -81,14 +82,10 @@ struct RecordDetailPage: View {
         }
     }
     
-    var amountFormatStyle: Decimal.FormatStyle {
-        .init().grouping(.never)
-    }
-    
     @ViewBuilder var amountField: some View {
         LabeledContent("Amount") {
             HStack {
-                TextField("Amount", value: $record.amount, format: Decimal.FormatStyle())
+                TextField("Amount", value: $record.amount, format: .number.grouping(.never))
                     .multilineTextAlignment(.trailing)
                     .labelsHidden()
             }

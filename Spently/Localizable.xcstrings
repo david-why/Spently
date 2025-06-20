@@ -43,10 +43,22 @@
     "Add" : {
 
     },
+    "Add income category" : {
+
+    },
     "Amount" : {
 
     },
+    "Cancel" : {
+
+    },
     "Category" : {
+
+    },
+    "Confirm" : {
+
+    },
+    "Confirm Changing Type" : {
 
     },
     "Currency" : {
@@ -58,24 +70,54 @@
     "Edit" : {
 
     },
+    "Edit Category" : {
+
+    },
+    "Emoji" : {
+
+    },
     "Expense" : {
       "comment" : "Used on the record editing page.",
       "extractionState" : "manual"
+    },
+    "Expense Categories" : {
+
     },
     "Income" : {
       "comment" : "Used on the record editing page.",
       "extractionState" : "manual"
     },
+    "Income Categories" : {
+
+    },
+    "Name" : {
+
+    },
+    "Name of category" : {
+
+    },
     "Notes" : {
+
+    },
+    "Preview" : {
 
     },
     "Records" : {
 
     },
+    "Settings" : {
+
+    },
     "Spently" : {
 
     },
+    "There are %lld transactions in this category. Proceeding will change their type and affect your accounting history.\n\nAre you sure you want to continue?" : {
+
+    },
     "Transactions" : {
+
+    },
+    "Type" : {
 
     },
     "Welcome to " : {
