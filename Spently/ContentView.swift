@@ -10,6 +10,7 @@ import SwiftData
 
 enum Tabs {
     case records
+    case stats
     case settings
 }
 
@@ -18,12 +19,15 @@ struct ContentView: View {
     
     @Environment(\.modelContext) private var modelContext
     
-    @State var tab: Tabs = .records
+    @State var tab: Tabs = .stats
     
     var body: some View {
         TabView(selection: $tab) {
             Tab("Transactions", systemImage: "doc.plaintext", value: .records) {
                 RecordsPage()
+            }
+            Tab("Stats", systemImage: "chart.bar.fill", value: .stats) {
+                StatsPage()
             }
             Tab("Settings", systemImage: "gear", value: .settings) {
                 SettingsPage()
@@ -45,6 +49,16 @@ struct ContentView: View {
     
     let _ = context.insert(SampleObjects.expenseRecord)
     let _ = context.insert(SampleObjects.incomeRecord)
+    
+    ContentView()
+        .modelContainer(container)
+}
+
+#Preview("Empty") {
+    let container = SampleObjects.modelContainer!
+    let context = SampleObjects.modelContext!
+    
+    let _ = TransactionCategory.defaultCategories.forEach(context.insert)
     
     ContentView()
         .modelContainer(container)
