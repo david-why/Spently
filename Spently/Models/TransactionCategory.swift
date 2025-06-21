@@ -14,12 +14,14 @@ class TransactionCategory {
     var emoji: String
     var type: TransactionType
     var ordinal: Int
+    @Relationship(deleteRule: .cascade, inverse: \TransactionRecord.category) var records: [TransactionRecord]
     
-    init(emoji: String, name: String, type: TransactionType, ordinal: Int) {
+    init(emoji: String, name: String, type: TransactionType, ordinal: Int, records: [TransactionRecord] = []) {
         self.emoji = emoji
         self.name = name
         self.type = type
         self.ordinal = ordinal
+        self.records = records
     }
     
     var typeName: String {

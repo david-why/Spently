@@ -76,6 +76,9 @@
     "Confirm Changing Type" : {
 
     },
+    "Confirm Deletion" : {
+
+    },
     "Currency" : {
 
     },
@@ -140,6 +143,38 @@
     },
     "Welcome to " : {
 
+    },
+    "You are deleting %lld categories, %lld of which have transactions which will be deleted. Are you sure?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You are deleting %#@arg1@, %2$lld of which have transactions which will be deleted. Are you sure?"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg category"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg categories"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

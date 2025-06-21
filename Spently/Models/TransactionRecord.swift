@@ -13,7 +13,7 @@ class TransactionRecord {
     var amount: Decimal
     var currencyCode: String
     var notes: String
-    var category: TransactionCategory
+    var category: TransactionCategory!
     var timestamp: Date
     
     init(amount: Decimal, currencyCode: String, notes: String, category: TransactionCategory, timestamp: Date) {

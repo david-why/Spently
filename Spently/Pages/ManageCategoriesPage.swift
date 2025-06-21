@@ -17,6 +17,9 @@ struct ManageCategoriesPage: View {
     
     @Environment(\.modelContext) var modelContext
     
+    @State var isConfirmingDeleteCategories: Bool = false
+    @State var confirmDeleteCategories: ConfirmDeletingCategories?
+    
     var body: some View {
         Form {
             Section("Income Categories") {
@@ -61,18 +64,23 @@ struct ManageCategoriesPage: View {
                 for (index, item) in list.enumerated() {
                     item.ordinal = startOrdinal + index
                 }
-//                try? modelContext.save()
-//                print(((try? modelContext.fetch(FetchDescriptor<TransactionCategory>(sortBy: [.init(\.ordinal)]))) ?? []).map { ($0.name, $0.ordinal) })
             }
             .onDelete { offsets in
                 print("deleting offsets: \(Set(offsets))")
-//                var toDelete = [TransactionCategory]()
-//                for offset in offsets {
-//                    let category = categoriesOfType[offset]
-//                    toDelete.append(category)
-//                }
-//                toDelete.forEach(modelContext.delete)
+                let toDelete = offsets.map { index in categoriesOfType[index] }
+                print(toDelete.first?.records as Any)
+                let countWithTransactions = toDelete.filter { !$0.records.isEmpty }.count
+                confirmDeleteCategories = .init(categories: toDelete, countWithTransactions: countWithTransactions)
+                isConfirmingDeleteCategories = true
             }
+        }
+        .alert("Confirm Deletion", isPresented: $isConfirmingDeleteCategories, presenting: confirmDeleteCategories) { data in
+            Button("Confirm", role: .destructive) {
+                data.categories.forEach(modelContext.delete)
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: { data in
+            Text("You are deleting \(data.categories.count) categories, \(data.countWithTransactions) of which have transactions which will be deleted. Are you sure?")
         }
     }
     
@@ -81,6 +89,12 @@ struct ManageCategoriesPage: View {
         let category = TransactionCategory(emoji: "❓", name: "", type: type, ordinal: existingCategories.last?.ordinal ?? TransactionCategory.startOrdinal(for: type))
         modelContext.insert(category)
         navigationPath.append(category)
+    }
+    
+    struct ConfirmDeletingCategories: Identifiable {
+        var categories: [TransactionCategory]
+        var countWithTransactions: Int
+        let id = UUID()
     }
 }
 

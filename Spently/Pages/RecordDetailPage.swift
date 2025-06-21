@@ -15,7 +15,7 @@ struct RecordDetailPage: View {
     @Query(sort: \TransactionCategory.ordinal) var categories: [TransactionCategory]
     @AppStorage("preferredCurrencies") var preferredCurrenciesString: String = ""
     
-    @State private var isCategoriesOpen = false
+    @State private var isCategoriesOpen = true // FIXME: false
 
     var body: some View {
         Form {
@@ -103,7 +103,7 @@ struct RecordDetailPage: View {
                 ZStack {
                     Circle()
                         .foregroundStyle(record.category == category ? Color.accentColor : .clear)
-                        .opacity(0.5)
+                        .opacity(1)
                     Circle()
                         .stroke(Color.gray, lineWidth: 1)
                     Text(verbatim: category.emoji)
