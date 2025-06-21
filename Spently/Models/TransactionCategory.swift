@@ -24,10 +24,6 @@ class TransactionCategory {
         self.records = records
     }
     
-    var typeName: String {
-        type.rawValue
-    }
-    
     static let defaultCategories: [TransactionCategory] = [
         .init(emoji: "💰", name: "Salary", type: .income, ordinal: 1000),
         .init(emoji: "💸", name: "Transfer", type: .income, ordinal: 1001),

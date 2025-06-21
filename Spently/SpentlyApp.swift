@@ -6,13 +6,19 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct SpentlyApp: App {
     var body: some Scene {
         WindowGroup {
+            let container = try? ModelContainer(
+                for: Schema(versionedSchema: SpentlySchemaV2.self),
+                migrationPlan: SpentlyMigrationPlan.self
+            )
+            
             ContentView()
-                .modelContainer(for: TransactionRecord.self)
+                .modelContainer(container!)  // FIXME: Don't panic
         }
     }
 }

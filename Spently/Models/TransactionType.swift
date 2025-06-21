@@ -7,9 +7,9 @@
 
 import Foundation
 
-enum TransactionType: String, Codable, CaseIterable {
-    case income = "income"
-    case expense = "expense"
+enum TransactionType: Int, Codable, CaseIterable {
+    case income = 1000
+    case expense = 2000
 
     var sign: String {
         switch self {

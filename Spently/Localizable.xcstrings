@@ -33,9 +33,6 @@
         }
       }
     },
-    "%@ Details" : {
-
-    },
     "%@%@" : {
       "localizations" : {
         "en" : {
@@ -85,7 +82,13 @@
     "Currency" : {
 
     },
+    "Danger Zone" : {
+
+    },
     "Date" : {
+
+    },
+    "Delete all transactions" : {
 
     },
     "Edit" : {
@@ -104,11 +107,20 @@
     "Expense Categories" : {
 
     },
+    "Expense Details" : {
+
+    },
+    "Filter" : {
+
+    },
     "Income" : {
       "comment" : "Used on the record editing page.",
       "extractionState" : "manual"
     },
     "Income Categories" : {
+
+    },
+    "Income Details" : {
 
     },
     "Income vs. Expense" : {
@@ -123,7 +135,7 @@
     "Name of category" : {
 
     },
-    "No data yet. Add some transactions to view your stats!" : {
+    "No data found." : {
 
     },
     "Notes" : {

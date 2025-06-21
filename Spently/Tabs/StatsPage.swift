@@ -10,7 +10,7 @@ import SwiftData
 import Charts
 
 struct StatsPage: View {
-    @State var isDateFilterOn: Bool = true
+    @State var isDateFilterOn: Bool = false
     
     @State var filterStartDate: Date = Calendar.current.startOfDay(for: .now.addingTimeInterval(-30 * 86400))
     @State var filterEndDate: Date = Calendar.current.startOfDay(for: .now.addingTimeInterval(86400))
@@ -119,7 +119,11 @@ struct StatsCharts: View {
                 .foregroundStyle(by: .value("Category", record.category.name))
             }
             .chartXAxis {
-                AxisMarks(values: ["Income", "Expense"])
+                AxisMarks(values: ["Income", "Expense"]) {
+                    AxisGridLine()
+                    AxisTick()
+                    AxisValueLabel()
+                }
             }
             .frame(height: 200)
         }
@@ -148,6 +152,16 @@ struct StatsCharts: View {
     let context = SampleObjects.modelContext!
     
     let _ = context.insert(SampleObjects.expenseRecord)
+    let _ = context.insert(SampleObjects.incomeRecord)
+    
+    StatsPage()
+        .modelContainer(container)
+}
+
+#Preview("Income only") {
+    let container = SampleObjects.modelContainer!
+    let context = SampleObjects.modelContext!
+    
     let _ = context.insert(SampleObjects.incomeRecord)
     
     StatsPage()
