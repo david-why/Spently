@@ -33,6 +33,9 @@ struct RecordsPage: View {
                                 TransactionView(record: record)
                             }
                         }
+                        .onDelete { indexes in
+                            indexes.map { section.0[$0] }.forEach(modelContext.delete)
+                        }
                     }
                 }
             }
@@ -65,7 +68,7 @@ struct RecordsPage: View {
                 }
             }
             .onAppear {
-                _ = zeroRecords.map(modelContext.delete)
+                zeroRecords.forEach(modelContext.delete)
             }
         }
     }

@@ -7,6 +7,9 @@
     " button to begin!" : {
 
     },
+    "---" : {
+
+    },
     "! Click the " : {
 
     },
@@ -43,7 +46,13 @@
     "Add" : {
 
     },
-    "Add income category" : {
+    "Add category" : {
+
+    },
+    "Add preferred currency" : {
+
+    },
+    "Add, remove, or edit the categories for your transactions." : {
 
     },
     "Amount" : {
@@ -52,7 +61,13 @@
     "Cancel" : {
 
     },
+    "Categories" : {
+
+    },
     "Category" : {
+
+    },
+    "Choose preferred currencies that always display at the top of the list. Swipe left on a currency to remove it from the list." : {
 
     },
     "Confirm" : {
@@ -90,6 +105,9 @@
     "Income Categories" : {
 
     },
+    "Manage categories" : {
+
+    },
     "Name" : {
 
     },
@@ -99,10 +117,10 @@
     "Notes" : {
 
     },
-    "Preview" : {
+    "Preferred Currencies" : {
 
     },
-    "Records" : {
+    "Preview" : {
 
     },
     "Settings" : {

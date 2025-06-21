@@ -8,17 +8,24 @@
 import SwiftUI
 import SwiftData
 
+enum Tabs {
+    case records
+    case settings
+}
+
 struct ContentView: View {
     @AppStorage("defaultCategoriesAdded") var defaultCategoriesAdded: Bool = false
     
     @Environment(\.modelContext) private var modelContext
     
+    @State var tab: Tabs = .records
+    
     var body: some View {
-        TabView {
-            Tab("Records", systemImage: "list.bullet.rectangle") {
+        TabView(selection: $tab) {
+            Tab("Transactions", systemImage: "doc.plaintext", value: .records) {
                 RecordsPage()
             }
-            Tab("Settings", systemImage: "gear") {
+            Tab("Settings", systemImage: "gear", value: .settings) {
                 SettingsPage()
             }
         }

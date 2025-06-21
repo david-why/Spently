@@ -44,10 +44,10 @@ class TransactionCategory {
         .init(emoji: "💡", name: "Other", type: .expense, ordinal: 2009),
     ]
     
-    static func userCategoryStartOrdinal(for type: TransactionType) -> Int {
+    static func startOrdinal(for type: TransactionType) -> Int {
         switch type {
-        case .income: 3000
-        case .expense: 4000
+        case .income: 1000
+        case .expense: 2000
         }
     }
 }
