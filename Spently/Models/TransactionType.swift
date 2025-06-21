@@ -18,10 +18,10 @@ enum TransactionType: String, Codable, CaseIterable {
         }
     }
     
-    var displayName: String {
+    var localizedName: String {
         switch self {
-        case .income: "Income"
-        case .expense: "Expense"
+        case .income: String(localized: "Income")
+        case .expense: String(localized: "Expense")
         }
     }
 }

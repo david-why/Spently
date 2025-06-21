@@ -94,7 +94,7 @@ struct RecordDetailPage: View {
     
     @ViewBuilder func categoryList(for type: TransactionType) -> some View {
         HStack {
-            Text(type.displayName)
+            Text(type.localizedName)
                 .frame(alignment: .leading)
             Spacer()
         }

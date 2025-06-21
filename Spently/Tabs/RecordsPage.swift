@@ -13,7 +13,7 @@ struct RecordsPage: View {
     
     @Query(filter: #Predicate<TransactionRecord> { $0.amount == 0 }) var zeroRecords: [TransactionRecord]
     
-    @Query var categories: [TransactionCategory]
+    @Query(sort: \TransactionCategory.ordinal) var categories: [TransactionCategory]
     
     @State var navigationPath: [TransactionRecord.ID] = []
     @State var isPresentingNoCategories: Bool = false
@@ -46,7 +46,7 @@ struct RecordsPage: View {
                         guard let category = categories.first else {
                             return
                         }
-                        let newRecord = TransactionRecord(amount: 0, currencyCode: Locale.current.currency?.identifier ?? "USD", notes: "", category: categories[0], timestamp: .now)
+                        let newRecord = TransactionRecord(amount: 0, currencyCode: Locale.current.currency?.identifier ?? "USD", notes: "", category: category, timestamp: .now)
                         modelContext.insert(newRecord)
                         do {
                             try modelContext.save()

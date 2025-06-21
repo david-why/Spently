@@ -46,7 +46,7 @@ struct CategoryDetailPage: View {
             
             Picker("Type", selection: $type) {
                 ForEach(TransactionType.allCases, id: \.self) { type in
-                    Text(type.displayName).tag(type)
+                    Text(type.localizedName).tag(type)
                 }
             }
             .onChange(of: type) { old, new in
