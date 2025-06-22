@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct TransactionView: View {
+    @AppStorage("currency") var currencyCode: String = Locale.current.currency?.identifier ?? "USD"
+    
     var record: TransactionRecord
     
     var body: some View {
@@ -26,7 +28,7 @@ struct TransactionView: View {
             
             Spacer()
             
-            Text("\(record.category.type.sign)\(record.amount.formatted(.currency(code: record.currency.identifier)))")
+            Text("\(record.category.type.sign)\(record.amount.formatted(.currency(code: currencyCode)))")
                 .font(.headline)
                 .foregroundStyle(record.category.type == .expense ? .red : .green)
         }

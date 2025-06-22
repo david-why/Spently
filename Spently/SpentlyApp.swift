@@ -7,18 +7,25 @@
 
 import SwiftUI
 import SwiftData
+import AppIntents
 
 @main
 struct SpentlyApp: App {
+    private var modelContainer: ModelContainer
+    
+    init() {
+        let modelContainer = try! ModelContainer(
+            for: TransactionRecord.self, TransactionCategory.self,
+            migrationPlan: SpentlyMigrationPlan.self
+        )
+        self.modelContainer = modelContainer
+        AppDependencyManager.shared.add(dependency: modelContainer)
+    }
+    
     var body: some Scene {
         WindowGroup {
-            let container = try? ModelContainer(
-                for: Schema(versionedSchema: SpentlySchemaV2.self),
-                migrationPlan: SpentlyMigrationPlan.self
-            )
-            
             ContentView()
-                .modelContainer(container!)  // FIXME: Don't panic
+                .modelContainer(modelContainer)
         }
     }
 }

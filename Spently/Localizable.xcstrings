@@ -7,21 +7,11 @@
     " button to begin!" : {
 
     },
-    "---" : {
-
-    },
     "! Click the " : {
 
     },
-    "%@ (%@)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ (%2$@)"
-          }
-        }
-      }
+    "%@" : {
+
     },
     "%@ %@" : {
       "localizations" : {
@@ -43,16 +33,35 @@
         }
       }
     },
+    "%@%lf" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@%2$lf"
+          }
+        }
+      }
+    },
+    "%lld transactions" : {
+
+    },
     "Add" : {
+
+    },
+    "Add a transaction" : {
 
     },
     "Add category" : {
 
     },
-    "Add preferred currency" : {
+    "Add Transaction" : {
 
     },
     "Add, remove, or edit the categories for your transactions." : {
+
+    },
+    "Adds an income or expense transaction to your list." : {
 
     },
     "Amount" : {
@@ -65,9 +74,6 @@
 
     },
     "Category" : {
-
-    },
-    "Choose preferred currencies that always display at the top of the list. Swipe left on a currency to remove it from the list." : {
 
     },
     "Confirm" : {
@@ -141,9 +147,6 @@
     "Notes" : {
 
     },
-    "Preferred Currencies" : {
-
-    },
     "Preview" : {
 
     },
@@ -157,6 +160,12 @@
 
     },
     "There are %lld transactions in this category. Proceeding will change their type and affect your accounting history.\n\nAre you sure you want to continue?" : {
+
+    },
+    "Transaction" : {
+
+    },
+    "Transaction Type" : {
 
     },
     "Transactions" : {

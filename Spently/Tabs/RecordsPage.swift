@@ -46,7 +46,7 @@ struct RecordsPage: View {
                         guard let category = categories.first else {
                             return
                         }
-                        let newRecord = TransactionRecord(amount: 0, currencyCode: Locale.current.currency?.identifier ?? "USD", notes: "", category: category, timestamp: .now)
+                        let newRecord = TransactionRecord(amount: 0, notes: "", category: category, timestamp: .now)
                         modelContext.insert(newRecord)
                         do {
                             try modelContext.save()

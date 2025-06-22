@@ -25,12 +25,6 @@ struct RecordDetailPage: View {
             Section {
                 categoryPicker
                 amountField
-                Picker("Currency", selection: $record.currency) {
-                    ForEach(currencyCodesWithValue, id: \.0) { (code, display) in
-                        Text("\(code) (\(display))")
-                            .tag(Locale.Currency(code))
-                    }
-                }
                 DatePicker("Date", selection: $record.timestamp)
             }
             Section("Notes") {
@@ -86,6 +80,7 @@ struct RecordDetailPage: View {
         LabeledContent("Amount") {
             HStack {
                 TextField("Amount", value: $record.amount, format: .number.grouping(.never))
+                    .keyboardType(.decimalPad)
                     .multilineTextAlignment(.trailing)
                     .labelsHidden()
             }

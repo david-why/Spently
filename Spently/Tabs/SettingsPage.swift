@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct SettingsPage: View {
-    @AppStorage("preferredCurrencies") var preferredCurrenciesString: String = ""
+    @AppStorage("currency") var currencyCode: String = Locale.current.currency?.identifier ?? "USD"
     
     @Query(sort: \TransactionCategory.ordinal) var categories: [TransactionCategory]
     
@@ -18,34 +18,16 @@ struct SettingsPage: View {
     @Environment(\.modelContext) var modelContext
     
     @State var navigationPath = NavigationPath()
-    @State var currencyToAdd: String?
     
     var body: some View {
         NavigationStack(path: $navigationPath) {
             Form {
-                Section {
-                    List(preferredCurrenciesBinding, id: \.self, editActions: .delete) { currencyCode in
-                        Text(currencyCode.wrappedValue)
-                    }
-                    Picker(selection: $currencyToAdd) {
-                        Text("---").tag(nil as String?)
-                        ForEach(unselectedCurrencies, id: \.self) { currencyCode in
-                            Text(currencyCode).tag(currencyCode)
-                        }
-                    } label: {
-                        Text("Add preferred currency")
-                            .foregroundStyle(Color.accentColor)
-                    }
-                    .onChange(of: currencyToAdd) {
-                        if let currencyToAdd {
-                            self.currencyToAdd = nil
-                            preferredCurrencies.append(currencyToAdd)
+                Section("Currency") {
+                    Picker("Currency", selection: $currencyCode) {
+                        ForEach(Locale.Currency.isoCurrencies) { currency in
+                            Text(currency.identifier)
                         }
                     }
-                } header: {
-                    Text("Preferred Currencies")
-                } footer: {
-                    Text("Choose preferred currencies that always display at the top of the list. Swipe left on a currency to remove it from the list.")
                 }
                 
                 Section {
@@ -72,24 +54,6 @@ struct SettingsPage: View {
                 unnamedCategories.forEach(modelContext.delete)
             }
         }
-        .animation(.default, value: preferredCurrencies)
-    }
-    
-    var preferredCurrencies: [String] {
-        get {
-            preferredCurrenciesString.split(separator: ",").map(String.init)
-        }
-        nonmutating set {
-            preferredCurrenciesString = newValue.joined(separator: ",")
-        }
-    }
-    
-    var preferredCurrenciesBinding: Binding<[String]> {
-        Binding(get: { preferredCurrencies }, set: { preferredCurrencies = $0 })
-    }
-    
-    var unselectedCurrencies: [String] {
-        Locale.Currency.isoCurrencies.map { $0.identifier }.filter { !preferredCurrencies.contains($0) }
     }
     
     func categories(for type: TransactionType) -> [TransactionCategory] {
