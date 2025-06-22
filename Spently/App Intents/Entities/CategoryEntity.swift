@@ -16,7 +16,7 @@ struct CategoryEntity: AppEntity {
     
     var id: UUID
     
-    @Property var type: TransactionType
+    @Property var type: TransactionTypeAppEnum
     
     @Property var name: String
     
@@ -33,7 +33,7 @@ struct CategoryEntity: AppEntity {
     
     init(category: TransactionCategory) {
         self.id = category.id
-        self.type = category.type
+        self.type = .init(from: category.type)
         self.name = category.name
         self.emoji = category.emoji
     }

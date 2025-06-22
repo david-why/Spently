@@ -60,8 +60,7 @@ extension TransactionEntityQuery: EntityPropertyQuery {
                              sortedBy: [EntityQuerySort<TransactionEntity>],
                              limit: Int?) async throws -> [TransactionEntity] {
         let context = modelContainer.mainContext
-        let initialValue = mode == .and ? true : false
-        let predicate = comparators.reduce(#Predicate<TransactionRecord> { _ in initialValue }, mode == .and ? { a, b in #Predicate { a.evaluate($0) && b.evaluate($0) } } : { a, b in #Predicate { a.evaluate($0) || b.evaluate($0) } })
+        let predicate = mode == .and ? comparators.combined() : comparators.combinedOr()
         let records = try context.fetch(FetchDescriptor<TransactionRecord>(predicate: predicate))
         var entities = records.map(TransactionEntity.init)
         let sortComparators = sortedBy.compactMap { sort -> KeyPathComparator<TransactionEntity>? in
