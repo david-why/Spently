@@ -43,13 +43,16 @@
         }
       }
     },
+    "%lld categories" : {
+
+    },
     "%lld transactions" : {
 
     },
     "Add" : {
 
     },
-    "Add a transaction" : {
+    "Add a ${category} transaction for ${amount}" : {
 
     },
     "Add category" : {
@@ -159,10 +162,16 @@
     "Stats" : {
 
     },
+    "The provided category is not found." : {
+
+    },
     "There are %lld transactions in this category. Proceeding will change their type and affect your accounting history.\n\nAre you sure you want to continue?" : {
 
     },
     "Transaction" : {
+
+    },
+    "Transaction Category" : {
 
     },
     "Transaction Type" : {

@@ -23,6 +23,14 @@ struct TransactionEntityQuery: EntityQuery {
 extension TransactionEntityQuery: EntityPropertyQuery {
     static let properties = QueryProperties {
         Property(\TransactionEntity.$amount) {
+            EqualToComparator { value in
+                let decimal = NSNumber(floatLiteral: value).decimalValue
+                return #Predicate<TransactionRecord> { $0.amount == decimal }
+            }
+            NotEqualToComparator { value in
+                let decimal = NSNumber(floatLiteral: value).decimalValue
+                return #Predicate<TransactionRecord> { $0.amount != decimal }
+            }
             LessThanOrEqualToComparator { value in
                 let decimal = NSNumber(floatLiteral: value).decimalValue
                 return #Predicate<TransactionRecord> { $0.amount <= decimal }
@@ -48,8 +56,8 @@ extension TransactionEntityQuery: EntityPropertyQuery {
     }
     
     @MainActor func entities(matching comparators: [Predicate<TransactionRecord>],
-                  mode: ComparatorMode,
-                  sortedBy: [EntityQuerySort<TransactionEntity>],
+                             mode: ComparatorMode,
+                             sortedBy: [EntityQuerySort<TransactionEntity>],
                              limit: Int?) async throws -> [TransactionEntity] {
         let context = modelContainer.mainContext
         let initialValue = mode == .and ? true : false

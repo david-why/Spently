@@ -10,9 +10,7 @@ import AppIntents
 import SwiftData
 
 struct TransactionEntity: AppEntity {
-    static var typeDisplayRepresentation: TypeDisplayRepresentation {
-        TypeDisplayRepresentation(name: "Transaction", numericFormat: "\(placeholder: .int) transactions")
-    }
+    static let typeDisplayRepresentation = TypeDisplayRepresentation(name: "Transaction", numericFormat: "\(placeholder: .int) transactions")
     
     static let defaultQuery = TransactionEntityQuery()
     
@@ -29,8 +27,9 @@ struct TransactionEntity: AppEntity {
     @Property var timestamp: Date
     
     var displayRepresentation: DisplayRepresentation {
-        DisplayRepresentation(
-            title: "\(categoryType == TransactionType.expense.rawValue ? "-" : "+")\(amount)",
+        let currencyCode = UserDefaults.standard.string(forKey: "currency") ?? "USD"
+        return DisplayRepresentation(
+            title: "\(categoryType == TransactionType.expense.rawValue ? "-" : "+")\(amount.formatted(.currency(code: currencyCode)))",
             subtitle: "\(categoryName)"
         )
     }

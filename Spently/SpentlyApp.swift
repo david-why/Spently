@@ -19,7 +19,12 @@ struct SpentlyApp: App {
             migrationPlan: SpentlyMigrationPlan.self
         )
         self.modelContainer = modelContainer
+        
+        // Dependencies for App Intents
         AppDependencyManager.shared.add(dependency: modelContainer)
+        
+        // Update list of shortcuts
+        SpentlyShortcuts.updateAppShortcutParameters()
     }
     
     var body: some Scene {
