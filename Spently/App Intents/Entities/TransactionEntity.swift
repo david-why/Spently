@@ -20,17 +20,15 @@ struct TransactionEntity: AppEntity {
     
     @Property var notes: String
 
-    @Property var categoryName: String
-    
-    @Property var categoryType: TransactionType.RawValue
+    @Property var category: CategoryEntity
     
     @Property var timestamp: Date
     
     var displayRepresentation: DisplayRepresentation {
         let currencyCode = UserDefaults.standard.string(forKey: "currency") ?? "USD"
         return DisplayRepresentation(
-            title: "\(categoryType == TransactionType.expense.rawValue ? "-" : "+")\(amount.formatted(.currency(code: currencyCode)))",
-            subtitle: "\(categoryName)"
+            title: "\(category.type.transactionType == TransactionType.expense ? "-" : "+")\(amount.formatted(.currency(code: currencyCode)))",
+            subtitle: "\(category.emoji) \(category.name)"
         )
     }
     
@@ -38,8 +36,7 @@ struct TransactionEntity: AppEntity {
         self.id = transaction.id
         self.amount = Double(truncating: transaction.amount as NSNumber)
         self.notes = transaction.notes
-        self.categoryName = transaction.category.name
-        self.categoryType = transaction.category.type.rawValue
+        self.category = CategoryEntity(category: transaction.category)
         self.timestamp = transaction.timestamp
     }
 }
