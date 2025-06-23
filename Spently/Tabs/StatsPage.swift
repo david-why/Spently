@@ -89,7 +89,7 @@ struct StatsCharts: View {
     init(filterDates: DateInterval?) {
         self.filterDates = filterDates
         let startDate = filterDates?.start ?? Date.distantPast
-        let endDate = filterDates?.end ?? Date()
+        let endDate = filterDates?.end ?? Date.distantFuture
         _transactions = Query(filter: #Predicate { $0.timestamp >= startDate && $0.timestamp <= endDate })
     }
     
