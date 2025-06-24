@@ -50,9 +50,12 @@ struct CategoryDetailPage: View {
                 }
             }
             .onChange(of: type) { old, new in
-                if new != category.type && recordCount > 0 {
+                guard old != new else { return }
+                if recordCount > 0 {
                     changingType = (old, new)
                     isPresentedChangingType = true
+                } else {
+                    category.type = new
                 }
             }
         }
