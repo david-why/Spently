@@ -87,6 +87,9 @@
     "Date" : {
 
     },
+    "Debugging" : {
+
+    },
     "Delete" : {
 
     },
@@ -112,7 +115,13 @@
     "Expense Details" : {
 
     },
+    "Export records as JSON" : {
+
+    },
     "Filter" : {
+
+    },
+    "Import JSON records" : {
 
     },
     "Income" : {

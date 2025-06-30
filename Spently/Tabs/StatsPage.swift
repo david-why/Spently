@@ -85,7 +85,8 @@ struct StatsCharts: View {
     var filterDates: DateInterval?
     
     @Query var transactions: [TransactionRecord]
-    
+    @Query var categories: [TransactionCategory]
+
     init(filterDates: DateInterval?) {
         self.filterDates = filterDates
         let startDate = filterDates?.start ?? Date.distantPast
@@ -111,12 +112,12 @@ struct StatsCharts: View {
         if transactions.isEmpty {
             Text("No data found.")
         } else {
-            Chart(transactions) { record in
+            Chart(categorySummaries) { summary in
                 BarMark(
-                    x: .value("Type", record.category.type.localizedName),
-                    y: .value("Amount", record.amount)
+                    x: .value("Type", summary.category.type.localizedName),
+                    y: .value("Amount", summary.total)
                 )
-                .foregroundStyle(by: .value("Category", record.category.name))
+                .foregroundStyle(by: .value("Category", summary.category.name))
             }
             .chartXAxis {
                 AxisMarks(values: ["Income", "Expense"]) {
@@ -130,20 +131,37 @@ struct StatsCharts: View {
     }
     
     @ViewBuilder func typeChart(for type: TransactionType) -> some View {
-        let records = transactions(of: type)
-        if records.isEmpty {
+        let summaries = categorySummaries.filter { $0.category.type == type }
+        if summaries.isEmpty {
             Text("No data found.")
         } else {
-            Chart(records) { record in
-                SectorMark(angle: .value("Amount", record.amount))
-                    .foregroundStyle(by: .value("Category", record.category.name))
+            Chart(summaries) { summary in
+                SectorMark(angle: .value("Amount", summary.total))
+                    .foregroundStyle(by: .value("Category", summary.category.name))
             }
             .frame(height: 200)
         }
     }
     
-    func transactions(of type: TransactionType) -> [TransactionRecord] {
-        transactions.filter { $0.category.type == type }
+    var categorySummaries: [CategorySummary] {
+        var summaryMap = [UUID : CategorySummary]()
+        
+        for transaction in transactions {
+            var summary = summaryMap[transaction.category.id] ?? .init(category: transaction.category, total: 0)
+            summary.total += transaction.amount
+            summaryMap[transaction.category.id] = summary
+        }
+        
+        return summaryMap.values.sorted { $0.total > $1.total }
+    }
+    
+    struct CategorySummary: Identifiable {
+        var category: TransactionCategory
+        var total: Decimal
+        
+        var id: UUID {
+            category.id
+        }
     }
 }
 
