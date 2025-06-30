@@ -12,6 +12,7 @@ struct CategoryDetailPage: View {
     @Bindable var category: TransactionCategory
     
     @Environment(\.modelContext) var modelContext
+    @Environment(\.dismiss) var dismiss
     
     @State var type: TransactionType
     @State var isPresentedChangingType: Bool = false
@@ -60,6 +61,11 @@ struct CategoryDetailPage: View {
             }
         }
         .navigationTitle("Edit Category")
+        .toolbar {
+            Button("Done") {
+                dismiss()
+            }
+        }
         .alert("Confirm Changing Type", isPresented: $isPresentedChangingType, presenting: changingType) { old, new in
             Button("Confirm", role: .destructive) {
                 category.type = new

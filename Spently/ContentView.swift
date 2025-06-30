@@ -19,7 +19,7 @@ struct ContentView: View {
     
     @Environment(\.modelContext) private var modelContext
     
-    @State var tab: Tabs = .stats
+    @State var tab: Tabs = .records
     
     var body: some View {
         TabView(selection: $tab) {

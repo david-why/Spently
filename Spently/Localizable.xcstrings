@@ -84,16 +84,13 @@
     "Currency" : {
 
     },
-    "Danger Zone" : {
-
-    },
     "Date" : {
 
     },
     "Delete" : {
 
     },
-    "Delete all transactions" : {
+    "Done" : {
 
     },
     "Edit" : {
@@ -171,7 +168,26 @@
 
     },
     "There are %lld transactions in this category. Proceeding will change their type and affect your accounting history.\n\nAre you sure you want to continue?" : {
-
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "There is %lld transaction in this category. Proceeding will change their type and affect your accounting history.\n\nAre you sure you want to continue?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "There are %lld transactions in this category. Proceeding will change their type and affect your accounting history.\n\nAre you sure you want to continue?"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "Transaction" : {
 

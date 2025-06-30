@@ -39,12 +39,6 @@ struct SettingsPage: View {
                 } footer: {
                     Text("Add, remove, or edit the categories for your transactions.")
                 }
-                
-                Section("Danger Zone") {
-                    Button("Delete all transactions", role: .destructive) {
-                        try! modelContext.container.erase()
-                    }
-                }
             }
             .navigationTitle("Settings")
             .navigationDestination(for: ManageCategoriesSubpage.self) { _ in

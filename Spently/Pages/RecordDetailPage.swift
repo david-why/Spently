@@ -15,6 +15,8 @@ struct RecordDetailPage: View {
     @Query(sort: \TransactionCategory.ordinal) var categories: [TransactionCategory]
     @AppStorage("preferredCurrencies") var preferredCurrenciesString: String = ""
     
+    @Environment(\.dismiss) var dismiss
+    
     @State private var isCategoriesOpen = true // FIXME: false
 
     var body: some View {
@@ -33,6 +35,11 @@ struct RecordDetailPage: View {
         }
         .animation(.default, value: isCategoriesOpen)
         .navigationTitle("Edit")
+        .toolbar {
+            Button("Done") {
+                dismiss()
+            }
+        }
     }
     
     var preferredCurrencies: [String] {
