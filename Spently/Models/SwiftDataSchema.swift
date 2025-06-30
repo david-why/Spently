@@ -258,7 +258,7 @@ enum SpentlySchemaV5: VersionedSchema {
     static let models: [any PersistentModel.Type] = [TransactionRecord.self, TransactionCategory.self]
     
     @Model
-    class TransactionRecord {
+    final class TransactionRecord {
         var id = UUID()
         var amount: Decimal
         var notes: String
@@ -289,59 +289,11 @@ enum SpentlySchemaV5: VersionedSchema {
             self.ordinal = ordinal
             self.records = records
         }
-        
-        var type: TransactionType {
-            get {
-                TransactionType(rawValue: typeInt)!
-            }
-            set {
-                typeInt = newValue.rawValue
-            }
-        }
-        
-        static var defaultCategories: [TransactionCategory] {
-            // IMPORTANT: Make sure "Other" is listed last!!
-            [
-                .init(emoji: "💰", name: "Salary", type: .income, ordinal: 1000),
-                .init(emoji: "💸", name: "Transfer", type: .income, ordinal: 1001),
-                .init(emoji: "📈", name: "Investments", type: .income, ordinal: 1002),
-                .init(emoji: "💡", name: "Other", type: .income, ordinal: 1003),
-                
-                .init(emoji: "🍔", name: "Food", type: .expense, ordinal: 2000),
-                .init(emoji: "🏠", name: "Housing", type: .expense, ordinal: 2001),
-                .init(emoji: "📊", name: "Insurance", type: .expense, ordinal: 2002),
-                .init(emoji: "🍿", name: "Entertainment", type: .expense, ordinal: 2003),
-                .init(emoji: "🛍️", name: "Shopping", type: .expense, ordinal: 2004),
-                .init(emoji: "💊", name: "Health", type: .expense, ordinal: 2005),
-                .init(emoji: "📚", name: "Education", type: .expense, ordinal: 2006),
-                .init(emoji: "✈️", name: "Travel", type: .expense, ordinal: 2007),
-                .init(emoji: "💸", name: "Loans", type: .expense, ordinal: 2008),
-                .init(emoji: "💡", name: "Other", type: .expense, ordinal: 2009),
-            ]
-        }
-        
-        static func startOrdinal(for type: TransactionType) -> Int {
-            type.rawValue
-        }
     }
     
     enum TransactionType: Int, Codable, CaseIterable {
         case income = 1000
         case expense = 2000
-
-        var sign: String {
-            switch self {
-            case .income: "+"
-            case .expense: "-"
-            }
-        }
-        
-        var localizedName: String {
-            switch self {
-            case .income: String(localized: "Income")
-            case .expense: String(localized: "Expense")
-            }
-        }
     }
 }
 
@@ -402,3 +354,96 @@ typealias TransactionRecord = SpentlySchemaV5.TransactionRecord
 typealias TransactionCategory = SpentlySchemaV5.TransactionCategory
 
 typealias TransactionType = SpentlySchemaV5.TransactionType
+
+extension TransactionCategory {
+    var type: TransactionType {
+        get {
+            TransactionType(rawValue: typeInt)!
+        }
+        set {
+            typeInt = newValue.rawValue
+        }
+    }
+    
+    static var defaultCategories: [TransactionCategory] {
+        // IMPORTANT: Make sure "Other" is listed last!!
+        [
+            .init(emoji: "💰", name: "Salary", type: .income, ordinal: 1000),
+            .init(emoji: "💸", name: "Transfer", type: .income, ordinal: 1001),
+            .init(emoji: "📈", name: "Investments", type: .income, ordinal: 1002),
+            .init(emoji: "💡", name: "Other", type: .income, ordinal: 1003),
+            
+            .init(emoji: "🍔", name: "Food", type: .expense, ordinal: 2000),
+            .init(emoji: "🏠", name: "Housing", type: .expense, ordinal: 2001),
+            .init(emoji: "📊", name: "Insurance", type: .expense, ordinal: 2002),
+            .init(emoji: "🍿", name: "Entertainment", type: .expense, ordinal: 2003),
+            .init(emoji: "🛍️", name: "Shopping", type: .expense, ordinal: 2004),
+            .init(emoji: "💊", name: "Health", type: .expense, ordinal: 2005),
+            .init(emoji: "📚", name: "Education", type: .expense, ordinal: 2006),
+            .init(emoji: "✈️", name: "Travel", type: .expense, ordinal: 2007),
+            .init(emoji: "💸", name: "Loans", type: .expense, ordinal: 2008),
+            .init(emoji: "💡", name: "Other", type: .expense, ordinal: 2009),
+        ]
+    }
+    
+    static func startOrdinal(for type: TransactionType) -> Int {
+        type.rawValue
+    }
+}
+
+extension TransactionType {
+    var sign: String {
+        switch self {
+        case .income: "+"
+        case .expense: "-"
+        }
+    }
+    
+    var localizedName: String {
+        switch self {
+        case .income: String(localized: "Income")
+        case .expense: String(localized: "Expense")
+        }
+    }
+}
+
+extension TransactionRecord: Codable {
+    enum CodingKeys: CodingKey {
+        case id
+        case amount
+        case notes
+        case categoryID
+        case timestamp
+    }
+    
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(amount, forKey: .amount)
+        try container.encode(notes, forKey: .notes)
+        try container.encode(category.id, forKey: .categoryID)
+        try container.encode(timestamp, forKey: .timestamp)
+    }
+    
+    convenience init(from decoder: Decoder) throws {
+        guard let modelContext else {
+            throw SpentlyDataError.noModelContext
+        }
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let id = try container.decode(ID.self, forKey: .id)
+        let amount = try container.decode(Decimal.self, forKey: .amount)
+        let notes = try container.decode(String.self, forKey: .notes)
+        let categoryID = try container.decode(ID.self, forKey: .categoryID)
+        guard let category = try modelContext.fetch(FetchDescriptor<TransactionCategory>(predicate: #Predicate { $0.id == categoryID })).first else {
+            throw SpentlyDataError.categoryNotFound
+        }
+        let timestamp = try container.decode(Date.self, forKey: .timestamp)
+        self.init(amount: amount, notes: notes, category: category, timestamp: timestamp)
+//        self.id = id
+    }
+}
+
+enum SpentlyDataError: Error {
+    case noModelContext
+    case categoryNotFound
+}
